@@ -11,13 +11,22 @@ index_seq2word = lambda s, index2word: [index2word[i] for i in s]
 
 
 def data_pipeline(data, length=50):
-    data = [t[:-1] for t in data]  # 去掉'\n'
+    # data = [t[:-1] for t in data]  # 去掉'\n'
     # 数据的一行像这样：'BOS i want to fly from baltimore to dallas round trip EOS
     # \tO O O O O O B-fromloc.city_name O B-toloc.city_name B-round_trip I-round_trip atis_flight'
     # 分割成这样[原始句子的词，标注的序列，intent]
-    data = [[t.split("\t")[0].split(" "), t.split("\t")[1].split(" ")[:-1], t.split("\t")[1].split(" ")[-1]] for t in
-            data]
-    data = [[t[0][1:-1], t[1][1:], t[2]] for t in data]  # 将BOS和EOS去掉，并去掉对应标注序列中相应的标注
+    # data = [[t.split("\t")[0].split(" "), t.split("\t")[1].split(" ")[:-1], t.split("\t")[1].split(" ")[-1]] for t in
+    #         data]
+    data = data.split('\n\n')
+    data = [sentence.split('\n') for sentence in data]
+    data_after = []
+    for sentence in data:
+        intent = sentence[0].split('\t')[-1]
+        sentence = sentence[1:]
+        sentence = ' '.join([item.split('\t')[0] for item in sentence])
+        tags = ' '.join([item.split('\t')[-1] for item in sentence])
+        data_after.append([sentence,tags,intent])
+    # data = [[t[0][1:-1], t[1][1:], t[2]] for t in data]  # 将BOS和EOS去掉，并去掉对应标注序列中相应的标注
     seq_in, seq_out, intent = list(zip(*data))
     sin = []
     sout = []
