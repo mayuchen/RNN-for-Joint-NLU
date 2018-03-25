@@ -13,7 +13,7 @@ embedding_size = 64
 hidden_size = 100
 n_layers = 2
 batch_size = 16
-vocab_size = 871
+vocab_size = 20000
 slot_size = 122
 intent_size = 22
 epoch_num = 50
@@ -34,8 +34,8 @@ def train(is_debug=False):
         sess.add_tensor_filter("has_inf_or_nan", tf_debug.has_inf_or_nan)
     sess.run(tf.global_variables_initializer())
     # print(tf.trainable_variables())
-    train_data = open("dataset/atis-2.train.w-intent.iob", "r").readlines()
-    test_data = open("dataset/atis-2.dev.w-intent.iob", "r").readlines()
+    train_data = open("dataset/322.train", "r").read()
+    test_data = open("dataset/322.test", "r").read()
     train_data_ed = data_pipeline(train_data)
     test_data_ed = data_pipeline(test_data)
     word2index, index2word, slot2index, index2slot, intent2index, index2intent = \

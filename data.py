@@ -23,11 +23,11 @@ def data_pipeline(data, length=50):
     for sentence in data:
         intent = sentence[0].split('\t')[-1]
         sentence = sentence[1:]
-        sentence = ' '.join([item.split('\t')[0] for item in sentence])
-        tags = ' '.join([item.split('\t')[-1] for item in sentence])
-        data_after.append([sentence,tags,intent])
+        sentence_o = [item.split('\t')[0] for item in sentence]
+        tags = [item.split('\t')[-1] for item in sentence]
+        data_after.append([sentence_o,tags,intent])
     # data = [[t[0][1:-1], t[1][1:], t[2]] for t in data]  # 将BOS和EOS去掉，并去掉对应标注序列中相应的标注
-    seq_in, seq_out, intent = list(zip(*data))
+    seq_in, seq_out, intent = list(zip(*data_after))
     sin = []
     sout = []
     # padding，原始序列和标注序列结尾+<EOS>+n×<PAD>
